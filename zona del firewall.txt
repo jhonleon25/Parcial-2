@@ -1,0 +1,17 @@
+dmz (active)
+  target: default
+  icmp-block-inversion: no
+  interfaces: eth0 eth1 eth2
+  sources:
+  services: ftp http https ssh
+  ports: 80/tcp 21/tcp 20/tcp 990/tcp
+  protocols:
+  masquerade: yes
+  forward-ports:
+        port=21:proto=tcp:toport=:toaddr=192.168.100.4
+        port=990:proto=tcp:toport=:toaddr=192.168.100.4
+  source-ports:
+  icmp-blocks:
+  rich rules:
+        rule family="ipv4" protocol value="icmp" log prefix="ICMP Message:" level="info" limit value="5/s" accept
+        rule protocol value="icmp" drop
